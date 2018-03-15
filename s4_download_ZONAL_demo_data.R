@@ -12,10 +12,10 @@ setwd(wkdir)
 
 
 system("wget https://www.dropbox.com/s/52qgb5no2l3f10g/zonal_data.zip?dl=0")
-system("mv zonal_data.zip?dl=0 zonal_data.zip" )
+system("mv zonal_data.zip?dl=0 data_tsa.zip" )
 
-system("unzip zonal_data.zip" )
-system("rm zonal_data.zip" )
+system("unzip data_tsa.zip" )
+system("rm data_tsa.zip" )
 
 ############### SET WORKING ENVIRONMENT
 setwd("~/demo_zonal_20180315/zonal_data/")
