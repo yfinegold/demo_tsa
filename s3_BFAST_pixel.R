@@ -1,8 +1,10 @@
 ##############################################################
 ######## USER PARAMETERS
 ##############################################################
+library(bfastSpatial)
 #  enter the directory where the time series is downloaded
-time_series_dir <- '~/downloads/time-series-2018-03-15-1133/'
+# use tab at the end of the line after time-series to autocomplete the next line
+time_series_dir <- '~/downloads/time-series'
 # specify the beginning of the historical period and monitoring period
 historical_year_beg <- 2014
 monitoring_year_beg <- 2017
@@ -12,17 +14,18 @@ monitoring_year_beg <- 2017
 ##############################################################
 ######## SCRIPT RUNS FROM HERE
 ##############################################################
-result <- list.files(path=time_series_dir, pattern = "_threshold.tif$", recursive = TRUE)
-TSstack <- paste0(time_series_dir,'/1/stack.vrt')
-dates <- paste0(time_series_dir,'/1/dates.csv')
+result <- list.files(path=time_series_dir, pattern = "_threshold.tif", recursive = TRUE, full.names = T)
+TSstack <- paste0(time_series_dir,'1/stack.vrt')
+dates <- paste0(time_series_dir,'1/dates.csv')
 ## BFAST pixel on the output
 plot(raster(result))
 pixelResult = bfmPixel(
-  TSstack,
-  dates = dates,
-  history = c(historical_year_beg, 1),
-  start = c(monitoring_year_beg, 1),
+  brick(TSstack),
+  dates = unlist(read.csv(dates)),
+  start = c(historical_year_beg, 1),
+  monend = c(monitoring_year_beg, 1),
   interactive= TRUE,
   # cell = 17000, # Can be tricky to pick a cell that got data
   plot = TRUE
 )
+
