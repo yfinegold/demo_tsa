@@ -15,8 +15,9 @@ system("wget https://www.dropbox.com/s/5bjdxq3hx5fdzab/data_tsa.zip?dl=0")
 system("mv data_tsa.zip?dl=0 data_tsa.zip" )
 
 system("unzip data_tsa.zip" )
-# system("chmod 755  ~/gnq_ws_20170726/scripts/oft-zonal_large_list.py")
+system("rm data_tsa.zip" )
 
 ############### SET WORKING ENVIRONMENT
 setwd("~/demo_BFAST_20180315/data_tsa/")
 rootdir <- paste0(getwd(),"/")
+

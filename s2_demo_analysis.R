@@ -28,7 +28,7 @@ rootdir <- '~/demo_BFAST_20180315/data_tsa/'
 setwd(rootdir)
 rootdir <- paste0(getwd(),"/")
 
-fielddata <- read.csv(paste0(wd,'demo_inventory_data.csv'))
+fielddata <- read.csv(paste0(rootdir,'demo_inventory_data.csv'))
 # check first 6 lines of the data
 head(fielddata)
 # convert to a spatial points dataframe
@@ -36,27 +36,27 @@ coordinates(fielddata) <- ~X + Y
 # assign projection
 crs(fielddata) <- CRS("+init=epsg:4326")
 # plot the data to get the points
+str(fielddata)
 plot(fielddata)
 # get the names all the tif files in the folder
-files <- list.files(path=wd, pattern="tif$", full.names=TRUE) 
+files <- list.files(path=rootdir, pattern="tif$", full.names=TRUE) 
 # stack all of the tif files using r raster library
 s <- stack(files)
 # extract the values from raster stack.
 ext <- extract(s, fielddata)
 fielddata_extracted <- cbind(fielddata,ext)
-plot(fielddata_extracted$NDMI_example_2.2, fielddata_extracted$Number.of.illegal.cuts)
-plot(fielddata_extracted@data$NDVI_example_2.2, fielddata_extracted@data$Tree.DBH.at.1.3m..cm.)
+plot(fielddata_extracted$NDMI_example_2.2, fielddata_extracted$average_tree_dbh)
+plot(fielddata_extracted@data$NDMI_example_2_threshold, fielddata_extracted@data$average_tree_dbh)
 
-
-ggscatter(merged, x = "average_tree_dbh", y = "EVI_example_2.2", 
+fielddata_extracted.df <- as.data.frame(fielddata_extracted)
+ggscatter(fielddata_extracted.df, x = "average_tree_dbh", y = "EVI_example_2.2", 
           add = "reg.line", conf.int = TRUE, 
           cor.coef = TRUE, cor.method = "pearson",
           xlab = "Average DBH", ylab = "EVI magnitude")
 
 
-ggscatter(merged, x = "average_tree_dbh", y = "NDVI_example_2.2", 
+ggscatter(fielddata_extracted.df, x = "average_tree_dbh", y = "NDVI_example_2.2", 
           add = "reg.line", conf.int = TRUE, 
           cor.coef = TRUE, cor.method = "pearson",
           xlab = "Average DBH", ylab = "NDVI magnitude")
 
-# add option to runBFAST spatial
